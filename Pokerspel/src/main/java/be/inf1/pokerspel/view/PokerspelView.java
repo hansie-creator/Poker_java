@@ -23,36 +23,42 @@ public class PokerspelView extends Region {
 
     public void update() {
         getChildren().clear();
-        int x = 0;
 
-        for (Kaart k : model.getTafelKaarten()) {
-            k.draaiOm();
+        
+        int tafelStartX = 250;
+        int tafelY = 220;
+
+        for (int i = 0; i < model.getTafelKaarten().size(); i++) {
+            Kaart k = model.getTafelKaarten().get(i);
             KaartView kv = new KaartView(k);
-            kv.setLayoutX(x * 70);
-            kv.setLayoutY(20);
+            kv.setLayoutX(tafelStartX + i * 70);
+            kv.setLayoutY(tafelY);
             getChildren().add(kv);
-            x++;
         }
 
-        x = 0;
-        for (Kaart k : model.getSpelerKaarten()) {
-            k.draaiOm();
+       
+        int spelerStartX = 300;
+        int spelerY = 450;
+
+        for (int i = 0; i < model.getSpelerKaarten().size(); i++) {
+            Kaart k = model.getSpelerKaarten().get(i);
             KaartView kv = new KaartView(k);
-            kv.setLayoutX(x * 70);
-            kv.setLayoutY(120);
+            kv.setLayoutX(spelerStartX + i * 70);
+            kv.setLayoutY(spelerY);
             getChildren().add(kv);
-            x++;
         }
 
+        
         if (model.isShowdown()) {
-            x = 0;
-            for (Kaart k : model.getBotKaarten()) {
-                k.draaiOm();
+            int botStartX = 300;
+            int botY = 60;
+
+            for (int i = 0; i < model.getBotKaarten().size(); i++) {
+                Kaart k = model.getBotKaarten().get(i);
                 KaartView kv = new KaartView(k);
-                kv.setLayoutX(x * 70);
-                kv.setLayoutY(220);
+                kv.setLayoutX(botStartX + i * 70);
+                kv.setLayoutY(botY);
                 getChildren().add(kv);
-                x++;
             }
         }
     }

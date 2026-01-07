@@ -134,10 +134,6 @@ public class PokerspelFXMLController {
     private void fold() {
         System.out.println("Je hebt gefold. De andere speler wint.");
         model.fold();
-        updateChips();
-        view.update();
-        bot.doeActie();
-        view.update();
         verlaatSpel();
     }
 
@@ -145,7 +141,6 @@ public class PokerspelFXMLController {
         System.out.println("Je hebt geraised");
         model.raise();
         updateChips();        
-        bot.doeActie();
         view.update();
     }
 
@@ -153,7 +148,6 @@ public class PokerspelFXMLController {
         System.out.println("Je hebt gecalled");
         model.call();
         updateChips();
-        bot.doeActie();
         view.update();
     }
 
@@ -161,7 +155,6 @@ public class PokerspelFXMLController {
         System.out.println("Je hebt gechecked");
         model.check();
         updateChips();
-        bot.doeActie();
         view.update();
     }
     

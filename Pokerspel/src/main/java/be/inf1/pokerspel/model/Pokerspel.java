@@ -11,21 +11,7 @@ import java.util.ArrayList;
  *
  * @author Jasper
  */
-/*public class Pokerspel {
-    private int spelerChips;
-    private int pot;
-    private int huidigeInzet;
-    private int spelerInzet;
-    private int aantalDeelnemers;
-    private final ArrayList<Kaart> tafelKaarten = new ArrayList<>();
-    public Fase fase = Fase.PRE_FLOP;
-    private ArrayList<Kaart> kaarten;
-    private Kaart eerste, tweede; // kaarten die je krijgt
-    private Kaart river;//5de kaart op tafel
-    private Kaart turn; // eertse 3 die komen
-    private Kaart flop;// 4de kaart die komt
-    private KaartDeck deck;
-*/
+
 
 public class Pokerspel {
 
@@ -34,8 +20,8 @@ public class Pokerspel {
     private int huidigeInzet = 0;
     private int spelerInzet = 0;
 
-    private final KaartDeck deck = new KaartDeck();
 
+    private final KaartDeck deck = new KaartDeck();
     private final ArrayList<Kaart> spelerKaarten = new ArrayList<>();
     private final ArrayList<Kaart> botKaarten = new ArrayList<>();
     private final ArrayList<Kaart> tafelKaarten = new ArrayList<>();
@@ -43,18 +29,32 @@ public class Pokerspel {
     private Fase fase = Fase.PRE_FLOP;
     private boolean spelerAanZet = true;
 
+    private boolean spelerHeeftGeacteerd = false;
+    private boolean botHeeftGeacteerd = false;
+
+    private PokerBot bot;
+
     public Pokerspel(int aantalDeelnemers) {
         spelerKaarten.add(deck.kaartTrekken());
         spelerKaarten.add(deck.kaartTrekken());
 
         botKaarten.add(deck.kaartTrekken());
         botKaarten.add(deck.kaartTrekken());
+
+        // spelerkaarten zijn meteen zichtbaar
+        for (Kaart k : spelerKaarten) {
+            k.draaiOm();
+        }
+
+        bot = new PokerBot(this);
     }
+
 
     public void check() {
         controleerBeurt();
+        spelerHeeftGeacteerd = true;
         spelerAanZet = false;
-        botActieKlaar();
+        botSpeelt();
     }
 
     public void call() {
@@ -63,8 +63,10 @@ public class Pokerspel {
         spelerChips -= bedrag;
         pot += bedrag;
         spelerInzet += bedrag;
+
+        spelerHeeftGeacteerd = true;
         spelerAanZet = false;
-        botActieKlaar();
+        botSpeelt();
     }
 
     public void raise() {
@@ -74,38 +76,83 @@ public class Pokerspel {
         pot += bedrag;
         spelerInzet += bedrag;
         huidigeInzet = spelerInzet;
+
+        spelerHeeftGeacteerd = true;
         spelerAanZet = false;
-        botActieKlaar();
+        botSpeelt();
     }
 
     public void fold() {
         fase = Fase.SHOWDOWN;
     }
 
-    private void botActieKlaar() {
-        spelerAanZet = true;
-        volgendeFase();
+
+    public void botCall() {
+        pot += huidigeInzet;
+        botHeeftGeacteerd = true;
     }
-//fases
-    private void volgendeFase() {
-        switch (fase) {
-            case PRE_FLOP: {
-                tafelKaarten.add(deck.kaartTrekken());
-                tafelKaarten.add(deck.kaartTrekken());
-                tafelKaarten.add(deck.kaartTrekken());
-                fase = Fase.FLOP;
-            }
-            case FLOP: {
-                tafelKaarten.add(deck.kaartTrekken());
-                fase = Fase.TURN;
-            }
-            case TURN : {
-                tafelKaarten.add(deck.kaartTrekken());
-                fase = Fase.RIVER;
-            }
-            case RIVER : fase = Fase.SHOWDOWN;
+
+    public void botRaise() {
+        huidigeInzet += 20;
+        pot += huidigeInzet;
+        botHeeftGeacteerd = true;
+    }
+
+    public void botFold() {
+        fase = Fase.SHOWDOWN;
+        botHeeftGeacteerd = true;
+    }
+
+
+    private void botSpeelt() {
+        if (fase == Fase.SHOWDOWN) return;
+
+        bot.doeActie();
+        spelerAanZet = true;
+
+        if (spelerHeeftGeacteerd && botHeeftGeacteerd) {
+            spelerHeeftGeacteerd = false;
+            botHeeftGeacteerd = false;
+            volgendeFase();
         }
     }
+
+
+    private void volgendeFase() {
+        switch (fase) {
+            case PRE_FLOP : {
+                for (int i = 0; i < 3; i++) {
+                    Kaart k = deck.kaartTrekken();
+                    k.draaiOm();
+                    tafelKaarten.add(k);
+                }
+                fase = Fase.FLOP;
+                break;
+            }
+            case FLOP : {
+                Kaart k = deck.kaartTrekken();
+                k.draaiOm();
+                tafelKaarten.add(k);
+                fase = Fase.TURN;
+                break;
+            }
+            case TURN : {
+                Kaart k = deck.kaartTrekken();
+                k.draaiOm();
+                tafelKaarten.add(k);
+                fase = Fase.RIVER;
+                break;
+            }
+            case RIVER : {
+                for (Kaart k : botKaarten) {
+                    k.draaiOm();
+                }
+                fase = Fase.SHOWDOWN;
+                break;
+            }
+        }
+    }
+
 
     private void controleerBeurt() {
         if (!spelerAanZet) {
@@ -115,26 +162,26 @@ public class Pokerspel {
 
 
     public ArrayList<Kaart> getSpelerKaarten() {
-        return spelerKaarten; 
-    }
-    
-    public ArrayList<Kaart> getBotKaarten() { 
-        return botKaarten; 
-    }
-    
-    public ArrayList<Kaart> getTafelKaarten() { 
-        return tafelKaarten; 
+        return spelerKaarten;
     }
 
-    public boolean isShowdown() { 
-        return fase == Fase.SHOWDOWN; 
+    public ArrayList<Kaart> getBotKaarten() {
+        return botKaarten;
     }
 
-    public int getSpelerChips() { 
-        return spelerChips; 
+    public ArrayList<Kaart> getTafelKaarten() {
+        return tafelKaarten;
     }
-    
-    public int getPot() { 
-        return pot; 
+
+    public boolean isShowdown() {
+        return fase == Fase.SHOWDOWN;
+    }
+
+    public int getSpelerChips() {
+        return spelerChips;
+    }
+
+    public int getPot() {
+        return pot;
     }
 }

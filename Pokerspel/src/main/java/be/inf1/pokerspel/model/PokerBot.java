@@ -25,8 +25,17 @@ public class PokerBot {
                 10000
         );
 
-        if (kans < 40) model.fold();
-        else if (kans > 75) model.raise();
-        else model.call();
+        if (kans < 40) {
+            model.botFold();
+            System.out.println("Bot fold");
+        }
+        else if (kans > 75) {
+            model.botRaise();
+            System.out.println("Bot raise");
+        }
+        else {
+            model.botCall();
+            System.out.println("Bot call");
+        }
     }
 }
