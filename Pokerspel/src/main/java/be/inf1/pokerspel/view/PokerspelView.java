@@ -25,33 +25,34 @@ public class PokerspelView extends Region {
         getChildren().clear();
 
         
-        int tafelStartX = 250;
-        int tafelY = 220;
+        int tafelStartX = -20;   // begin links in de ellips
+        int tafelY = 70;        // hoogte binnen de ellips
+        int spacing = 70;
 
         for (int i = 0; i < model.getTafelKaarten().size(); i++) {
             Kaart k = model.getTafelKaarten().get(i);
             KaartView kv = new KaartView(k);
-            kv.setLayoutX(tafelStartX + i * 70);
+            kv.setLayoutX(tafelStartX + i * spacing);
             kv.setLayoutY(tafelY);
             getChildren().add(kv);
         }
 
        
-        int spelerStartX = 300;
-        int spelerY = 450;
+        int spelerStartX = 200;
+        int spelerY = 320;
 
         for (int i = 0; i < model.getSpelerKaarten().size(); i++) {
             Kaart k = model.getSpelerKaarten().get(i);
             KaartView kv = new KaartView(k);
-            kv.setLayoutX(spelerStartX + i * 70);
+            kv.setLayoutX(spelerStartX + i * spacing);
             kv.setLayoutY(spelerY);
             getChildren().add(kv);
         }
 
         
         if (model.isShowdown()) {
-            int botStartX = 300;
-            int botY = 60;
+            int botStartX = -50;
+            int botY = 320;
 
             for (int i = 0; i < model.getBotKaarten().size(); i++) {
                 Kaart k = model.getBotKaarten().get(i);

@@ -93,9 +93,6 @@ public class PokerspelFXMLController {
             verlaatKnop.toFront();
             startKnop.toFront();
  
-            //view.toBack();
-            //view.setMouseTransparent(true);
-
             updateChips();
             
 
@@ -125,9 +122,11 @@ public class PokerspelFXMLController {
 
             if (spelerScore > botScore) {
                 System.out.println("Speler wint");
-            } else if (botScore > spelerScore) {
+            } 
+            else if (botScore > spelerScore) {
                 System.out.println("Bot wint");
-            } else {
+            } 
+            else {
                 System.out.println("Gelijkspel");
             }
         }
