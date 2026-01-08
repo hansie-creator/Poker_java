@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Rectangle;
 
 public class PokerspelFXMLController {
 
@@ -70,7 +71,7 @@ public class PokerspelFXMLController {
         
     }
 
-    private void start() {
+    public void start() {
 
         try {
             int aantalDeelnemers = 2;
@@ -81,7 +82,19 @@ public class PokerspelFXMLController {
 
             view = new PokerspelView(model);
             tafelView.getChildren().clear();
-            tafelView.getChildren().add(view);
+            tafelView.getChildren().add(0,view);
+            
+            view.setMouseTransparent(true);
+            
+            raiseKnop.toFront();
+            callKnop.toFront();
+            checkKnop.toFront();
+            foldKnop.toFront();
+            verlaatKnop.toFront();
+            startKnop.toFront();
+ 
+            //view.toBack();
+            //view.setMouseTransparent(true);
 
             updateChips();
             
