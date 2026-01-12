@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
@@ -36,7 +37,7 @@ public class PokerspelFXMLController {
     private Button checkKnop;
 
     @FXML
-    private Label deelnemersView;
+    private Label potView;
 
     @FXML
     private Button foldKnop;
@@ -52,6 +53,13 @@ public class PokerspelFXMLController {
 
     @FXML
     private Button verlaatKnop;
+    
+    @FXML
+    private Label botActieView;
+    
+    
+    @FXML
+    private TextField raiseField;
     
     private Pokerspel model;
     private PokerspelView view;
@@ -95,6 +103,7 @@ public class PokerspelFXMLController {
  
             updateChips();
             
+            
 
         } catch (NumberFormatException e) {
             System.out.println("Je hebt geen deelnemers");
@@ -122,6 +131,7 @@ public class PokerspelFXMLController {
 
             if (spelerScore > botScore) {
                 System.out.println("Speler wint");
+               
             } 
             else if (botScore > spelerScore) {
                 System.out.println("Bot wint");
@@ -138,6 +148,14 @@ public class PokerspelFXMLController {
         chipView.setText(model.getSpelerChips()+"");
     }
     
+    public void updatePot(){
+        potView.setText(model.getPot()+"");
+    }
+    
+    public void updateBotActie(){
+        botActieView.setText(model.getLaatsteBotActie());
+    }
+    
     
     public void verlaatSpel(){
         javafx.application.Platform.exit();//chatgpt
@@ -146,20 +164,32 @@ public class PokerspelFXMLController {
     private void fold() {
         System.out.println("Je hebt gefold. De andere speler wint.");
         model.fold();
-        verlaatSpel();
+        updateBotActie();
+        
+        
     }
 
     private void raise() {
-        System.out.println("Je hebt geraised");
-        model.raise();
-        updateChips();        
-        view.update();
+        try{
+            int bedrag = Integer.parseInt(raiseField.getText());//chatgpt
+            model.raise(bedrag);
+            updateChips();        
+            view.update();   
+            updateBotActie();
+            System.out.println("Je hebt geraised");
+        }
+        catch(NumberFormatException e){
+            System.out.println("ongeldig raisebedrag");//chatgpt
+        }
+        updatePot();
     }
 
     private void call() {
         System.out.println("Je hebt gecalled");
         model.call();
         updateChips();
+        updatePot();
+        updateBotActie();
         view.update();
     }
 
@@ -167,7 +197,9 @@ public class PokerspelFXMLController {
         System.out.println("Je hebt gechecked");
         model.check();
         updateChips();
+        updateBotActie();
         view.update();
+        
     }
     
 }

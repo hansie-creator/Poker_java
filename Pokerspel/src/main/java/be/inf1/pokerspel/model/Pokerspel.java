@@ -15,10 +15,11 @@ import java.util.ArrayList;
 
 public class Pokerspel {
 
-    private int spelerChips = 500;
+    private int spelerChips;
     private int pot = 0;
     private int huidigeInzet = 0;
     private int spelerInzet = 0;
+    private String laatsteBotActie = "";
 
 
     private final KaartDeck deck = new KaartDeck();
@@ -35,6 +36,8 @@ public class Pokerspel {
     private PokerBot bot;
 
     public Pokerspel(int aantalDeelnemers) {
+        spelerChips = 500;
+        resetPot();
         spelerKaarten.add(deck.kaartTrekken());
         spelerKaarten.add(deck.kaartTrekken());
 
@@ -69,12 +72,16 @@ public class Pokerspel {
         botSpeelt();
     }
 
-    public void raise() {
+    public void raise(int bedrag) {
         controleerBeurt();
-        int bedrag = 20;
-        spelerChips -= bedrag;
-        pot += bedrag;
-        spelerInzet += bedrag;
+        int totaal = (huidigeInzet - spelerInzet)+ bedrag;
+        if (totaal > spelerChips){
+            totaal = spelerChips;
+        }
+        
+        spelerChips -= totaal;
+        pot += totaal;
+        spelerInzet += totaal;
         huidigeInzet = spelerInzet;
 
         spelerHeeftGeacteerd = true;
@@ -85,22 +92,29 @@ public class Pokerspel {
     public void fold() {
         fase = Fase.SHOWDOWN;
     }
+    
+    public String getLaatsteBotActie(){
+        return laatsteBotActie;
+    }
 
 
     public void botCall() {
         pot += huidigeInzet;
         botHeeftGeacteerd = true;
+        laatsteBotActie = "bot callt";
     }
 
     public void botRaise() {
         huidigeInzet += 20;
         pot += huidigeInzet;
         botHeeftGeacteerd = true;
+        laatsteBotActie = "bot raised met" + 20 +"chips";
     }
 
     public void botFold() {
         fase = Fase.SHOWDOWN;
         botHeeftGeacteerd = true;
+        laatsteBotActie = "bot foldt";
     }
 
 
@@ -116,15 +130,27 @@ public class Pokerspel {
             volgendeFase();
         }
     }
+    
+    public void resetInzetten(){
+        spelerInzet = 0;
+        huidigeInzet = 0;
+    }
+    
+    public void resetPot(){
+        pot = 0;
+    }
+ 
 
 
     private void volgendeFase() {
+        resetInzetten();
+        
         switch (fase) {
             case PRE_FLOP : {
                 for (int i = 0; i < 3; i++) {
-                    Kaart k = deck.kaartTrekken();
-                    k.draaiOm();
-                    tafelKaarten.add(k);
+                Kaart k = deck.kaartTrekken();
+                k.draaiOm();
+                tafelKaarten.add(k);
                 }
                 fase = Fase.FLOP;
                 break;
@@ -149,7 +175,9 @@ public class Pokerspel {
                 }
                 fase = Fase.SHOWDOWN;
                 break;
+                
             }
+            
         }
     }
 
