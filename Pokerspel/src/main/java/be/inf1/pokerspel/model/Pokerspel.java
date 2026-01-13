@@ -64,6 +64,7 @@ public class Pokerspel {
    
 
     public void call() {
+        bot.endRaise();
         controleerBeurt();
         int bedrag = huidigeInzet - spelerInzet;
         spelerChips -= bedrag;
@@ -113,7 +114,7 @@ public class Pokerspel {
         huidigeInzet += 20;
         pot += huidigeInzet;
         botHeeftGeacteerd = true;
-        laatsteBotActie = "bot raised met" + 20 +"chips";
+        laatsteBotActie = "bot raised met " + 20 + " chips";
     }
 
     public void botFold() {
@@ -149,11 +150,9 @@ public class Pokerspel {
 
     private void volgendeFase() {
         resetInzetten();
-        if (bot.raised()){
-            if (call = true){
-                bot.isRaised();
-                volgendeFase();
-            }
+        
+        if(bot.raised()){
+            return;
         }
         
         switch (fase) {

@@ -45,7 +45,7 @@ public class PokerBot {
         }
     }
 
-   public void isRaised(){
+   public void endRaise(){
        raised = false;
    }
 
