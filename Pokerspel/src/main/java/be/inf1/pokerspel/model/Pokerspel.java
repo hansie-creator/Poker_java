@@ -22,6 +22,7 @@ public class Pokerspel {
     private String laatsteBotActie = "";
     private boolean call;
     private Status winnaar = Status.niet_bepaald;
+    private boolean raiseOpen;
 
 
     private final KaartDeck deck = new KaartDeck();
@@ -36,9 +37,11 @@ public class Pokerspel {
     private boolean botHeeftGeacteerd = false;
 
     private PokerBot bot;
+    private int botRaisesDezeRonde;
 
     public Pokerspel(int aantalDeelnemers) {
         call = false;
+        raiseOpen = false;
         resetPot();
         spelerKaarten.add(deck.kaartTrekken());
         spelerKaarten.add(deck.kaartTrekken());
@@ -74,7 +77,7 @@ public class Pokerspel {
 
         spelerHeeftGeacteerd = true;
         spelerAanZet = false;
-        call = true;
+        raiseOpen = false;
         botSpeelt();
     }
 
@@ -113,16 +116,24 @@ public class Pokerspel {
     }
 
     public void botRaise() {
+        if (botRaisesDezeRonde >= 1) {
+            botCall();
+            return;
+        }
+
         huidigeInzet += 20;
-        pot += huidigeInzet;
+        pot += 20;
+        raiseOpen = true;
         botHeeftGeacteerd = true;
-        laatsteBotActie = "bot raised met " + 20 +" chips";
+        botRaisesDezeRonde++;
+        laatsteBotActie = "bot raised met 20 chips";
     }
 
     public void botFold() {
         fase = Fase.SHOWDOWN;
         botHeeftGeacteerd = true;
         laatsteBotActie = "bot foldt";
+        bepaalWinnaar();
         
     }
 
@@ -132,6 +143,8 @@ public class Pokerspel {
 
         bot.doeActie();
         spelerAanZet = true;
+        
+        if(raiseOpen)return;
 
         if (spelerHeeftGeacteerd && botHeeftGeacteerd) {
             spelerHeeftGeacteerd = false;
@@ -179,7 +192,7 @@ public class Pokerspel {
 
 
     private void volgendeFase() {
-        
+        botRaisesDezeRonde = 0;
         
         switch (fase) {
             case PRE_FLOP : {
@@ -210,13 +223,10 @@ public class Pokerspel {
                     k.draaiOm();
                 }
                 fase = Fase.SHOWDOWN;
-                break;
-                  
-            }
-            case SHOWDOWN :{
                 bepaalWinnaar();
-                break;
+                break;          
             }
+
            
             
         }
