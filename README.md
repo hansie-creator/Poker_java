@@ -91,7 +91,5 @@ The game only moves to the next phase when:
 ---
 
 ## Authors
-Hannes
-Student - IIW Uhasselt
-Jasper  
-Student – IIW Uhasselt
+Hannes :Student - IIW Uhasselt,
+Jasper :Student – IIW Uhasselt
