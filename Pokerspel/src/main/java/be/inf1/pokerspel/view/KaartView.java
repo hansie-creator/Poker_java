@@ -26,8 +26,8 @@ public class KaartView extends Region{
         Rectangle kaart = new Rectangle(0,0,BREEDTE,HOOGTE);
         if (model.isOmgedraaid() || forceShow){
             kaart.setFill(Color.WHITE);
-            Text t = new Text(model.getRang()+"" + model.getFiguur());
-            t.setLayoutX(BREEDTE/2 - 3);
+            Text t = new Text(model.getFiguur() +"\n"+ (model.getRang()+""));
+            t.setLayoutX(BREEDTE/10 - 3);
             t.setLayoutY(HOOGTE/2-5);
             getChildren().addAll(kaart, t );
         }

@@ -179,7 +179,7 @@ public class PokerspelFXMLController {
             System.out.println("Je hebt geraised");
         }
         catch(NumberFormatException e){
-            System.out.println("ongeldig raisebedrag");//chatgpt
+            System.out.println("ongeldig raisebedrag");
         }
         updatePot();
     }
@@ -199,7 +199,7 @@ public class PokerspelFXMLController {
         updateChips();
         updateBotActie();
         view.update();
-        
+        updatePot();
     }
     
 }

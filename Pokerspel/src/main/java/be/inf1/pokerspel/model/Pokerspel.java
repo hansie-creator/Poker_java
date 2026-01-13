@@ -15,11 +15,12 @@ import java.util.ArrayList;
 
 public class Pokerspel {
 
-    private int spelerChips;
+    private int spelerChips = 500;
     private int pot = 0;
     private int huidigeInzet = 0;
     private int spelerInzet = 0;
     private String laatsteBotActie = "";
+    private boolean call;
 
 
     private final KaartDeck deck = new KaartDeck();
@@ -36,7 +37,7 @@ public class Pokerspel {
     private PokerBot bot;
 
     public Pokerspel(int aantalDeelnemers) {
-        spelerChips = 500;
+        call = false;
         resetPot();
         spelerKaarten.add(deck.kaartTrekken());
         spelerKaarten.add(deck.kaartTrekken());
@@ -59,6 +60,8 @@ public class Pokerspel {
         spelerAanZet = false;
         botSpeelt();
     }
+    
+   
 
     public void call() {
         controleerBeurt();
@@ -69,6 +72,7 @@ public class Pokerspel {
 
         spelerHeeftGeacteerd = true;
         spelerAanZet = false;
+        call = true;
         botSpeelt();
     }
 
@@ -83,6 +87,7 @@ public class Pokerspel {
         pot += totaal;
         spelerInzet += totaal;
         huidigeInzet = spelerInzet;
+        
 
         spelerHeeftGeacteerd = true;
         spelerAanZet = false;
@@ -144,6 +149,12 @@ public class Pokerspel {
 
     private void volgendeFase() {
         resetInzetten();
+        if (bot.raised()){
+            if (call = true){
+                bot.isRaised();
+                volgendeFase();
+            }
+        }
         
         switch (fase) {
             case PRE_FLOP : {
@@ -177,12 +188,15 @@ public class Pokerspel {
                 break;
                 
             }
+           
             
         }
     }
+    
 
 
-    private void controleerBeurt() {
+
+    public void controleerBeurt() {
         if (!spelerAanZet) {
             throw new IllegalStateException("Niet jouw beurt");
         }

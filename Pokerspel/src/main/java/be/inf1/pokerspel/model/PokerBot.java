@@ -11,31 +11,47 @@ package be.inf1.pokerspel.model;
 public class PokerBot {
 
     private final Pokerspel model;
-
+    private boolean raised;
     public PokerBot(Pokerspel model) {
         this.model = model;
     }
 
     public void doeActie() {
         if (model.isShowdown()) return;
+        raised = false;
 
         double kans = PokerSimulator.berekenWinkans(
                 model.getBotKaarten(),
                 model.getTafelKaarten(),
                 10000
         );
+        
+        
 
-        if (kans < 40) {
+        if (kans < 30) {
+            raised = false;
             model.botFold();
             System.out.println("Bot fold");
         }
-        else if (kans > 75) {
+        else if (kans > 31) {
+            raised = true;
             model.botRaise();
             System.out.println("Bot raise");
         }
         else {
+            raised = false;
             model.botCall();
             System.out.println("Bot call");
         }
     }
+
+   public void isRaised(){
+       raised = false;
+   }
+
+    public boolean raised() {
+        return raised;
+    }
+    
+    
 }
