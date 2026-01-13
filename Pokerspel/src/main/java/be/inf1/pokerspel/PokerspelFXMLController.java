@@ -116,31 +116,9 @@ public class PokerspelFXMLController {
     public void update() {
         view.update();
         
-        if (model.isShowdown()) {
-
-            ArrayList<Kaart> spelerHand = new ArrayList<>();
-            spelerHand.addAll(model.getSpelerKaarten());
-            spelerHand.addAll(model.getTafelKaarten());
-
-            ArrayList<Kaart> botHand = new ArrayList<>();
-            botHand.addAll(model.getBotKaarten());
-            botHand.addAll(model.getTafelKaarten());
-
-            int spelerScore = HandEvaluator.bepaalHandSterkte(spelerHand);
-            int botScore = HandEvaluator.bepaalHandSterkte(botHand);
-
-            if (spelerScore > botScore) {
-                System.out.println("Speler wint");
-               
-            } 
-            else if (botScore > spelerScore) {
-                System.out.println("Bot wint");
-            } 
-            else {
-                System.out.println("Gelijkspel");
-            }
-        }
     }
+        
+        
     
     
     // volgende 3 lijnen chatGpt hulp
@@ -174,6 +152,7 @@ public class PokerspelFXMLController {
             int bedrag = Integer.parseInt(raiseField.getText());//chatgpt
             model.raise(bedrag);
             updateChips();        
+            updatePot();
             view.update();   
             updateBotActie();
             System.out.println("Je hebt geraised");
@@ -190,12 +169,14 @@ public class PokerspelFXMLController {
         updateChips();
         updatePot();
         updateBotActie();
+        
         view.update();
     }
 
     private void check() {
         System.out.println("Je hebt gechecked");
         model.check();
+        updatePot();
         updateChips();
         updateBotActie();
         view.update();

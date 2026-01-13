@@ -33,7 +33,7 @@ public class PokerBot {
             model.botFold();
             System.out.println("Bot fold");
         }
-        else if (kans > 31) {
+        else if (kans > 60) {
             raised = true;
             model.botRaise();
             System.out.println("Bot raise");

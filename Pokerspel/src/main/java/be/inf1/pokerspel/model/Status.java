@@ -9,6 +9,6 @@ package be.inf1.pokerspel.model;
  * @author Jasper
  */
 public enum Status {
-    NIKS, EEN_KAART, called,fold,raised,checked
+    NIKS, EEN_KAART, called,fold,raised,checked,speler_wint,bot_wint,gelijkspel, niet_bepaald
 }
 

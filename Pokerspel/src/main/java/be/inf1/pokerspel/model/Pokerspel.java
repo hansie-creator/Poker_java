@@ -21,6 +21,7 @@ public class Pokerspel {
     private int spelerInzet = 0;
     private String laatsteBotActie = "";
     private boolean call;
+    private Status winnaar = Status.niet_bepaald;
 
 
     private final KaartDeck deck = new KaartDeck();
@@ -96,6 +97,7 @@ public class Pokerspel {
     }
 
     public void fold() {
+        
         fase = Fase.SHOWDOWN;
     }
     
@@ -114,13 +116,14 @@ public class Pokerspel {
         huidigeInzet += 20;
         pot += huidigeInzet;
         botHeeftGeacteerd = true;
-        laatsteBotActie = "bot raised met " + 20 + " chips";
+        laatsteBotActie = "bot raised met " + 20 +" chips";
     }
 
     public void botFold() {
         fase = Fase.SHOWDOWN;
         botHeeftGeacteerd = true;
         laatsteBotActie = "bot foldt";
+        
     }
 
 
@@ -145,15 +148,38 @@ public class Pokerspel {
     public void resetPot(){
         pot = 0;
     }
+    
+    
+    
+    public void bepaalWinnaar(){
+        ArrayList<Kaart> spelerHand = new ArrayList<>();
+        spelerHand.addAll(spelerKaarten);
+        spelerHand.addAll(tafelKaarten);
+        
+        ArrayList<Kaart> botHand = new ArrayList<>();
+        botHand.addAll(botKaarten);
+        botHand.addAll(tafelKaarten);
+        
+        int spelerScore = HandEvaluator.bepaalHandSterkte(spelerHand);
+        int botScore = HandEvaluator.bepaalHandSterkte(botHand);
+        
+        if (spelerScore > botScore){
+            winnaar = Status.speler_wint;
+            System.out.println("Je hebt gewonnen!!!");
+        }
+        else{
+            winnaar = Status.bot_wint;
+            System.out.println("Je hebt verloren");
+        }
+        
+        
+        
+    }
  
 
 
     private void volgendeFase() {
-        resetInzetten();
         
-        if(bot.raised()){
-            return;
-        }
         
         switch (fase) {
             case PRE_FLOP : {
@@ -185,15 +211,18 @@ public class Pokerspel {
                 }
                 fase = Fase.SHOWDOWN;
                 break;
-                
+                  
+            }
+            case SHOWDOWN :{
+                bepaalWinnaar();
+                break;
             }
            
             
         }
     }
     
-
-
+    
 
     public void controleerBeurt() {
         if (!spelerAanZet) {

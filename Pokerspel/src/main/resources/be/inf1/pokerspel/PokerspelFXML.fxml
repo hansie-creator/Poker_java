@@ -26,6 +26,6 @@
       </AnchorPane>
       <Button fx:id="startKnop" layoutX="432.0" layoutY="32.0" mnemonicParsing="false" text="Start" />
       <TextField fx:id="raiseField" layoutX="187.0" layoutY="317.0" />
-      <Label fx:id="botActieView" layoutX="14.0" layoutY="321.0" prefHeight="17.0" prefWidth="181.0" text="Bot" />
+      <Label fx:id="botActieView" layoutX="18.0" layoutY="321.0" prefHeight="17.0" prefWidth="166.0" text="Bot" />
    </children>
 </AnchorPane>
