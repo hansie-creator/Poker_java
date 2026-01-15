@@ -12,7 +12,7 @@ import java.util.Collections;
 
 /**
  *
- * @author hanne
+ * @author hannes Depoorter, Jasper Gebruers
  */
 public class KaartDeck {
     private ArrayList<Kaart> kaarten;

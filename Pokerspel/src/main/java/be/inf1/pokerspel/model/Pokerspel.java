@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Jasper
+ * @author Jasper Gebruers, Hannes Depoorter
  */
 
 
@@ -19,6 +19,7 @@ public class Pokerspel {
     private int pot = 0;
     private int huidigeInzet = 0;
     private int spelerInzet = 0;
+    private int botInzet = 0;
     private String laatsteBotActie = "";
     private boolean call;
     private Status winnaar = Status.niet_bepaald;
@@ -92,7 +93,7 @@ public class Pokerspel {
         pot += totaal;
         spelerInzet += totaal;
         huidigeInzet = spelerInzet;
-        
+        raiseOpen = true;
 
         spelerHeeftGeacteerd = true;
         spelerAanZet = false;
@@ -110,9 +111,14 @@ public class Pokerspel {
 
 
     public void botCall() {
-        pot += huidigeInzet;
+        
+        int botCallBedrag = huidigeInzet - botInzet;
+        pot += botCallBedrag;
+        botInzet += botCallBedrag;
         botHeeftGeacteerd = true;
+        raiseOpen = false;
         laatsteBotActie = "bot callt";
+        
     }
 
     public void botRaise() {
@@ -120,9 +126,11 @@ public class Pokerspel {
             botCall();
             return;
         }
-
-        huidigeInzet += 20;
-        pot += 20;
+        int botRaiseBedrag = 20;
+        huidigeInzet += botRaiseBedrag;
+        int teBetalen = huidigeInzet - botInzet;
+        pot += teBetalen;
+        botInzet += teBetalen;
         raiseOpen = true;
         botHeeftGeacteerd = true;
         botRaisesDezeRonde++;
@@ -192,8 +200,10 @@ public class Pokerspel {
 
 
     private void volgendeFase() {
+        resetInzetten();
+        botInzet =0;
         botRaisesDezeRonde = 0;
-        
+        // methode switch en case via: https://www.geeksforgeeks.org/java/switch-statement-in-java/
         switch (fase) {
             case PRE_FLOP : {
                 for (int i = 0; i < 3; i++) {

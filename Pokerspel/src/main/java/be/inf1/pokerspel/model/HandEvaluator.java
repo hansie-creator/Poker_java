@@ -1,4 +1,4 @@
-
+// author Jasper Gebruers, Hannes Depoorter
 package be.inf1.pokerspel.model;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.Set;
 public class HandEvaluator {
 
     public static int bepaalHandSterkte(ArrayList<Kaart> kaarten) {
-        
+        // lijn 15-29 met voorbeeld van chatGPT
         Map<Kaart.Rang, Integer> rangTelling = new HashMap<>();
         Map<Kaart.Figuur, Integer> suitTelling = new HashMap<>();
         ArrayList<Integer> rangen = new ArrayList<>();

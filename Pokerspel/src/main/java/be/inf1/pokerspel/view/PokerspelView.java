@@ -10,7 +10,7 @@ import javafx.scene.layout.Region;
 
 /**
  *
- * @author Jasper
+ * @author Jasper Gebruers, Hannes Depoorter
  */
 public class PokerspelView extends Region {
 

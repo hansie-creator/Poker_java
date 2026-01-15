@@ -12,7 +12,7 @@ import javafx.scene.text.Text;
 
 /**
  *
- * @author Jasper
+ * @author Jasper Gebruers, Hannes Depoorter
  */
 public class KaartView extends Region{
     private Kaart model;

@@ -6,7 +6,7 @@ package be.inf1.pokerspel.model;
 
 /**
  *
- * @author hanne
+ * @author hannes Depoorter, Jasper Gebruers
  */
 
 public enum Fase {

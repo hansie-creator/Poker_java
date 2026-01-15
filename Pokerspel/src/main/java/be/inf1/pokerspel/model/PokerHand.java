@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Hannes
+ * @author Hannes Depoorter, Jasper Gebruers
  */
 public class PokerHand {
 

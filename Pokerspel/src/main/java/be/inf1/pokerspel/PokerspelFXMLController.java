@@ -1,3 +1,5 @@
+// author Jasper Gebruers, Hannes Depoorter
+
 package be.inf1.pokerspel;
 
 import be.inf1.pokerspel.model.HandEvaluator;
@@ -15,7 +17,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 
@@ -102,8 +103,6 @@ public class PokerspelFXMLController {
             startKnop.toFront();
  
             updateChips();
-            
-            
 
         } catch (NumberFormatException e) {
             System.out.println("Je hebt geen deelnemers");

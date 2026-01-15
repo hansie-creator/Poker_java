@@ -1,3 +1,5 @@
+//  Jasper Gebruers, Hannes Depoorter
+// Verhouding = 50-50
 package be.inf1.pokerspel;
 
 import javafx.application.Application;

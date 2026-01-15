@@ -6,7 +6,7 @@ package be.inf1.pokerspel.model;
 
 /**
  *
- * @author Hannes
+ * @author Hannes Depoorter, Jasper Gebruers
  */
 public class PokerBot {
 

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author hanne
+ * @author hannes Depoorter, Jasper Gebruers
  */
 public class PokerSimulator {
 
