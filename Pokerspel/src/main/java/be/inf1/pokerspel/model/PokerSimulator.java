@@ -62,7 +62,8 @@ public class PokerSimulator {
     private static void verwijderBekendeKaarten(
             KaartDeck deck,
             ArrayList<Kaart> bekendeKaarten
-    ) {
+    ) 
+    {
         for (Kaart kaart : bekendeKaarten) {
             deck.verwijderKaart(kaart);
         }
